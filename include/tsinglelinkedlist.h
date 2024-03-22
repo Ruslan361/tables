@@ -3,6 +3,8 @@
 #include <ostream>
 #include <iterator.h>
 
+#include <iostream>
+
 template <typename T>
 class Iterator;
 
@@ -184,7 +186,8 @@ void TSingleLinkedList<T>::Remove(Iterator<T>& iter)
 		throw std::out_of_range("you can not delete element from empty list");
 	if (first == iter.node)
 	{
-		first = iter.node->next;
+		Node<T>* current = (iter.node->next);
+		first = current;
 		delete iter.node;
 		iter = Iterator<T> (first);
 		if (!first)

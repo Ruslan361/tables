@@ -28,7 +28,7 @@ public:
 	}
 	Iterator& operator=(const Iterator& d)
 	{
-		node = d.node;
+		this->node = d.node;
 		return *this;
 	}
 	bool operator==(const Iterator& iterator) const

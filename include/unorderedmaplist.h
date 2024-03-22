@@ -1,28 +1,27 @@
 #pragma once
-#include "vector.h"
+#include "tsinglelinkedlist.h"
 #include "ttable.h"
 #include "tpair.h"
 
 
 template <typename TKey, typename TValue>
-class TUnorderedMapVector : public TTable<TKey, TValue>
+class TUnorderedMapList : public TTable<TKey, TValue>
 {
 private:
-	Vector<TPair<TKey, TValue>> values;
+	TSingleLinkedList<TPair<TKey, TValue>> values;
 public:
-	TUnorderedMapVector(size_t size) 
+	TUnorderedMapVector()
 	{
-		values = Vector<TPair<TKey, TValue>>();
-		values.setCopacity(size);
+		values = TSingleLinkedList<TPair<TKey, TValue>>();
 	};
 	bool Search(const TKey& key, TValue& value) const override
 	{
-		size_t size = values.getSize();
-		for (size_t i = 0; i < size; i++)
+		for (auto it = values.begin(); it != values.end(); it++)
 		{
-			if (values[i].key == key)
+			auto elem = *it;
+			if (elem.key == key)
 			{
-				value = values[i].value;
+				value = elem.value;
 				return true;
 			}
 		}
@@ -35,7 +34,7 @@ public:
 		{
 			throw std::invalid_argument("you can not add value because key is exist in TUnorderedMapVector");
 		}
-		values.push_back(TPair<TKey, TValue> (key, value));
+		values.Add(TPair<TKey, TValue>(key, value));
 	}
 	void Add(const TPair<TKey, TValue>& pair) override
 	{
@@ -43,19 +42,18 @@ public:
 	}
 	void Remove(const TKey& key) override
 	{
-		size_t size = values.getSize();
-		size_t i;
-		for (i = 0; i < size; i++)
+		for (auto it = values.begin(); it != values.end(); it++)
 		{
-			if (values[i].key == key)
+			auto elem = *it;
+			if (elem.key == key)
 			{
-				//value = values[i].value;
 				break;
 			}
 		}
-		values.Remove(i);
+		if (it != values.end())
+			values.Remove(it);
 	}
-	~TUnorderedMapVector() {
+	~TUnorderedMapList() {
 
 	}
 };
